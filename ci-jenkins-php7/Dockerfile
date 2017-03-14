@@ -11,7 +11,15 @@ RUN apt-key adv --keyserver keys.gnupg.net --recv-keys 14AA40EC0831756756D7F66C4
 
 RUN export DEBIAN_FRONTEND=noninteractive; \
     apt-get -q update; \
-    apt-get -qq install php7.1 php7.1-cli php7.1-xsl php7.1-json php7.1-curl php7.1-sqlite php7.1-mysqlnd php7.1-xdebug php7.1-intl php7.1-mcrypt php7.1-mbstring php7.1-zip php-pear curl git ant sudo
+    apt-get -qq install php7.1 php7.1-cli php7.1-xsl php7.1-json php7.1-curl php7.1-sqlite php7.1-mysqlnd php7.1-xdebug php7.1-intl php7.1-mcrypt php7.1-mbstring php7.1-zip php-pear curl git ant sudo apt-transport-https ca-certificates curl software-properties-common
+
+RUN curl -fsSL https://download.docker.com/linux/ubuntu/gpg | apt-key add -
+
+RUN add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable"
+
+RUN export DEBIAN_FRONTEND=noninteractive; \
+    apt-get -q update; \
+    apt-get -qq install docker-ce
 
 RUN sed -i 's|disable_functions.*=|;disable_functions=|' /etc/php/7.1/cli/php.ini; \
     sed -i 's/^error_reporting = .*/error_reporting = E_ALL \& ~E_STRICT/' /etc/php/7.1/cli/php.ini; \
